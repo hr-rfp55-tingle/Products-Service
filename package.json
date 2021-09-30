@@ -1,0 +1,26 @@
+{
+  "name": "products-service",
+  "version": "1.0.0",
+  "description": "Home for the products API and DB housing the products data",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hr-rfp55-tingle/Products-Service.git"
+  },
+  "author": "Justin Beere",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hr-rfp55-tingle/Products-Service/issues"
+  },
+  "homepage": "https://github.com/hr-rfp55-tingle/Products-Service#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-promise-router": "^4.1.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4"
+  }
+}
