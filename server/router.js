@@ -38,15 +38,17 @@ router.get('/styles/:productId', async (req, res) => {
       const keys = Object.keys(results.rows);
       const last = keys[keys.length - 1];
       for (let row in results.rows ) {
-        // console.log(results.rows[row]);
         db.query('SELECT thumbnail_url, url FROM photos WHERE style_id = $1', [results.rows[row].style_id])
           .then((photoResults) => {
             results.rows[row].photos = photoResults.rows;
-            // console.log(row);
+            db.query('SELECT id, quantity, size FROM skus WHERE style_id = $1', [results.rows[row].style_id])
+              .then((skuResults) => {
+                results.rows[row].skus = skuResults.rows;
 
-            if (row === last) {
-              res.send(results.rows);
-            }
+                if (row === last) {
+                  res.send(results.rows);
+                }
+              })
           }).catch(err => console.log(err));
       }
     }).catch(err => console.log(err));
