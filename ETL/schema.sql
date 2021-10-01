@@ -25,13 +25,13 @@ CREATE TABLE related (
 );
 
 CREATE TABLE styles (
-  id SERIAL,
-  productId BIGINT references products(id),
+  style_id SERIAL,
+  product_id BIGINT references products(id),
   "name" VARCHAR(60) NULL DEFAULT NULL,
   sale_price VARCHAR(50) NULL DEFAULT 0,
   original_price DECIMAL DEFAULT 0,
-  default_style BOOLEAN NOT NULL DEFAULT FALSE,
-  PRIMARY KEY (id)
+  "default?" BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (style_id)
 );
 
 CREATE TABLE features (
@@ -44,7 +44,7 @@ CREATE TABLE features (
 
 CREATE TABLE photos (
   id SERIAL,
-  styleId INTEGER NULL DEFAULT NULL,
+  style_id BIGINT references styles(style_id),
   "url" TEXT NULL DEFAULT NULL,
   thumbnail_url TEXT NULL DEFAULT NULL,
   PRIMARY KEY (id)
@@ -52,7 +52,7 @@ CREATE TABLE photos (
 
 CREATE TABLE skus (
   id SERIAL,
-  styleId INTEGER NULL DEFAULT NULL,
+  style_id BIGINT references styles(style_id),
   size VARCHAR(10) NULL DEFAULT NULL,
   quantity INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
@@ -66,18 +66,18 @@ COPY features  (id, product_id, feature, value)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/features.csv'
 DELIMITER ',' CSV HEADER;
 
+COPY styles (style_id, product_id, name, sale_price, original_price, "default?")
+FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/styles.csv'
+DELIMITER ',' CSV HEADER;
+
 COPY related (id, current_product_id, related_product_id)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/related.csv'
 DELIMITER ',' CSV HEADER;
 
-COPY photos (id, styleId, url, thumbnail_url)
+COPY photos (id, style_id, url, thumbnail_url)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/photos.csv'
 DELIMITER ',' CSV HEADER;
 
-COPY styles (id, productId, name, sale_price, original_price,default_style)
-FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/styles.csv'
-DELIMITER ',' CSV HEADER;
-
-COPY skus (id, styleId, size, quantity)
+COPY skus (id, style_id, size, quantity)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/skus.csv'
 DELIMITER ',' CSV HEADER;
