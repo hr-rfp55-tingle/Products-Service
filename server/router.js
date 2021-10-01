@@ -18,40 +18,36 @@ router.get('/products/:id', async (req, res) => {
   // res.send({product: rows[0], features: featureResults.rows});
 });
 
-router.get('/features/:productId', async (req, res) => {
-  const { productId } = req.params
-  const { rows } = await db.query('SELECT * FROM features WHERE product_id = $1', [productId]);
-  res.send(rows);
-});
+router.get('/products/:product_id/styles', async (req, res) => {
+  const query = {
+    name: 'get-styles',
+    text: `
+      select styles.product_id,
+        (select json_agg(sty)
+        from (
+          select style_id, name, original_price, sale_price, "default?",
+            (select json_agg(pho) from (
+              select thumbnail_url, url from photos where style_id=1
+              ) pho
+            ) as photos,
+            (select json_agg(sk) from (
+              select quantity, size from skus where style_id=1
+              ) sk
+            ) as skus
+          from styles where product_id=$1
+        ) sty
+      ) as results
+      from styles where styles.product_id=$1
+    `,
+    values: [req.params.product_id],
+  };
 
-router.get('/photos/:styleId', async (req, res) => {
-  const { styleId } = req.params
-  const { rows } = await db.query('SELECT * FROM photos WHERE style_id = $1', [styleId]);
-  res.send(rows);
-});
-
-router.get('/styles/:productId', async (req, res) => {
-  const { productId } = req.params
-  // const { rows } = await db.query('SELECT * FROM styles WHERE product_id = $1', [productId]);
-  db.query('SELECT * FROM styles WHERE product_id = $1', [productId])
-    .then((results) => {
-      const keys = Object.keys(results.rows);
-      const last = keys[keys.length - 1];
-      for (let row in results.rows ) {
-        db.query('SELECT thumbnail_url, url FROM photos WHERE style_id = $1', [results.rows[row].style_id])
-          .then((photoResults) => {
-            results.rows[row].photos = photoResults.rows;
-            db.query('SELECT id, quantity, size FROM skus WHERE style_id = $1', [results.rows[row].style_id])
-              .then((skuResults) => {
-                results.rows[row].skus = skuResults.rows;
-
-                if (row === last) {
-                  res.send(results.rows);
-                }
-              })
-          }).catch(err => console.log(err));
-      }
-    }).catch(err => console.log(err));
+  try {
+    const results = await db.query(query);
+    res.json(results.rows[0]);
+  } catch (err) {
+    res.json(err);
+  }
 });
 
 // export our router to be mounted by the parent application
