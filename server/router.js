@@ -24,36 +24,32 @@ router.get('/features/:productId', async (req, res) => {
   res.send(rows);
 });
 
+router.get('/photos/:styleId', async (req, res) => {
+  const { styleId } = req.params
+  const { rows } = await db.query('SELECT * FROM photos WHERE style_id = $1', [styleId]);
+  res.send(rows);
+});
+
 router.get('/styles/:productId', async (req, res) => {
   const { productId } = req.params
-  // const { rows } = await db.query('SELECT * FROM styles WHERE productid = $1', [productId]);
-  db.query('SELECT * FROM styles WHERE productid = $1', [productId])
+  // const { rows } = await db.query('SELECT * FROM styles WHERE product_id = $1', [productId]);
+  db.query('SELECT * FROM styles WHERE product_id = $1', [productId])
     .then((results) => {
+      const keys = Object.keys(results.rows);
+      const last = keys[keys.length - 1];
       for (let row in results.rows ) {
-        console.log(results.rows[row]);
-        db.query('SELECT thumbnail_url, url FROM photos WHERE styleid = $1', [results.rows[row].id])
+        // console.log(results.rows[row]);
+        db.query('SELECT thumbnail_url, url FROM photos WHERE style_id = $1', [results.rows[row].style_id])
           .then((photoResults) => {
-            row.photos = photoResults.rows;
-            console.log(row);
+            results.rows[row].photos = photoResults.rows;
+            // console.log(row);
+
+            if (row === last) {
+              res.send(results.rows);
+            }
           }).catch(err => console.log(err));
       }
-      res.send(results.rows);
     }).catch(err => console.log(err));
-
-  // for (let row in rows ) {
-  //   const photoResults = await db.query('SELECT thumbnail_url, url FROM photos WHERE styleid = $1', [row.id]);
-  //   row.photos = photoResults.rows;
-  // }
-  // res.send(rows);
-  // const getInfo = async () => {
-  //   rows.forEach((row) => {
-  //     const photoResults =  await db.query('SELECT thumbnail_url, url FROM photos WHERE styleid = $1', [row.id]);
-  //     row.photos = photoResults.rows;
-  //   });
-  //   res.send(rows);
-  // };
-  // await getInfo();
-  // const styles = await
 });
 
 // export our router to be mounted by the parent application
