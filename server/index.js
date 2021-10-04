@@ -1,17 +1,17 @@
 const express = require('express');
-// const cors = require('cors');
-// const compression = require('compression');
-const PORT = 6879;
+
+const PORT = 3000;
 const app = express();
 
 const router  = require('./router.js');
 
 app.use(express.json());
-// app.use(compression());
-// app.use(cors());
+app.use(express.static('../public'));
 app.use('/', router);
 
-
+app.get('/loaderio-2b79f9fb238cbf6efa0de9b097676545/', (req, res) => {
+  res.sendFile('loaderio-2b79f9fb238cbf6efa0de9b097676545.txt');
+});
 
 
 app.listen(PORT, () => {
