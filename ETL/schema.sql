@@ -16,7 +16,8 @@ COPY products (id, name, slogan, description, category, default_price)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/product.csv'
 DELIMITER ',' CSV HEADER;
 
-CREATE INDEX ON products (id);
+-- CREATE INDEX ON products (id);
+CREATE INDEX products_id_hash_index ON products USING hash(id);
 
 CREATE TABLE related (
   id SERIAL PRIMARY KEY,
@@ -28,7 +29,8 @@ COPY related (id, current_product_id, related_product_id)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/related.csv'
 DELIMITER ',' CSV HEADER;
 
-CREATE INDEX ON related (current_product_id);
+-- CREATE INDEX ON related (current_product_id);
+CREATE INDEX related_current_product_id_hash_index ON related USING hash(current_product_id);
 
 CREATE TABLE styles (
   style_id SERIAL PRIMARY KEY,
@@ -43,7 +45,8 @@ COPY styles (style_id, product_id, name, sale_price, original_price, "default?")
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/styles.csv'
 DELIMITER ',' CSV HEADER;
 
-CREATE INDEX ON styles (product_id);
+-- CREATE INDEX ON styles (product_id);
+CREATE INDEX styles_product_id_hash_index ON styles USING hash(product_id);
 
 CREATE TABLE features (
   id SERIAL PRIMARY KEY,
@@ -56,7 +59,8 @@ COPY features  (id, product_id, feature, value)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/features.csv'
 DELIMITER ',' CSV HEADER;
 
-CREATE INDEX ON features (product_id);
+-- CREATE INDEX ON features (product_id);
+CREATE INDEX features_product_id_hash_index ON features USING hash(product_id);
 
 CREATE TABLE photos (
   id SERIAL PRIMARY KEY,
@@ -69,7 +73,8 @@ COPY photos (id, style_id, url, thumbnail_url)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/photos.csv'
 DELIMITER ',' CSV HEADER;
 
-CREATE INDEX ON photos (style_id);
+-- CREATE INDEX ON photos (style_id);
+CREATE INDEX photos_style_id_hash_index ON photos USING hash(style_id);
 
 CREATE TABLE skus (
   id SERIAL PRIMARY KEY,
@@ -82,4 +87,6 @@ COPY skus (id, style_id, size, quantity)
 FROM '/Users/devbox/HackReactor/RFP55/SDC/Products-Service/csv/skus.csv'
 DELIMITER ',' CSV HEADER;
 
-CREATE INDEX ON skus (style_id);
+-- CREATE INDEX ON skus (style_id);
+CREATE INDEX skus_style_id_hash_index ON skus USING hash(style_id);
+
