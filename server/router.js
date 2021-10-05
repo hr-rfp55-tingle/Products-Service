@@ -1,10 +1,8 @@
-
+const express = require('express');
 const db = require('./db');
 
-// this has the same API as the normal express router except
-// it allows you to use async functions as route handlers
-const Router = require('express-promise-router');
-const router = new Router();
+const router = express.Router();
+
 
 router.get('/products', async (req, res) => {
   // TODO after testing might want to consider adding a limit
