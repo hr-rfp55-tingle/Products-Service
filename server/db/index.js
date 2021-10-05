@@ -5,6 +5,14 @@ const pool = new Pool({
   connectionString,
 });
 
+pool.connect()
+  .then((res) => {
+    console.log('now connected to db');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 module.exports = {
   async query(text, params) {
     const start = Date.now();
