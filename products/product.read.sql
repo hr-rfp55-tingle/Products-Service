@@ -1,0 +1,1 @@
+SELECT p.id, 'hr-rfp' as campus, p.name, p.slogan, p.description, p.category, p.default_price, json_agg(json_build_object('feature', features.feature,'value', features.value)) AS features FROM products as p LEFT JOIN features ON p.id = features.product_id WHERE p.id = {{.id}} GROUP BY p.id, campus,p.name, p.description, p.category, p.default_price
