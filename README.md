@@ -1,13 +1,13 @@
 # Project Atelier - Overview of Products Microservice
 
-Part of a team tasked with building microservices that replaced the legacy monolithic API for an e-commerce platform to handle the increase in growing traffic. 
+Part of a team tasked with building scalable microservices that replaced the legacy monolithic API for an e-commerce platform to handle the increase in growing traffic. 
 The products microservice was stress tested to ensure the service could handle increased traffic during sales and promotions for the e-commerce platform. All services were tested on EC2 t2.micro instances.
 
 ## Project Accomplishments:
  
 - Designed a read-optimized Postgres DB achieving queries under 7ms on over 10 million rows of product data
 - Ensured low latency (69ms) and 0.00% error rate for fast reliable consumption of the Products Microservice
-- Stress tested microservice with loader.io to ensure it could handle over 600k requests per minute.
+- Stress tested microservice to ensure it could handle over 600k requests per minute with 0% error rate and low latency response.
 - Utilized K6 and New Relic to pinpoint system bottlenecks in local development and in the cloud (AWS)
 - Implemented Nginx to balance the traffic using a least connection load balancing strategy and caching.
 
