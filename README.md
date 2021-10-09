@@ -11,7 +11,7 @@ The products microservice was stress tested to ensure the service could handle i
 - Utilized K6 and New Relic to pinpoint system bottlenecks in local development and in the cloud (AWS)
 - Implemented Nginx to balance the traffic using a least connection load balancing strategy and caching.
 
-### [API Endpoints](https://github.com/LiberNovus/tdd-react-timer/blob/master/api-endpoints.md)
+### [API Endpoints](https://github.com/hr-rfp55-tingle/Products-Service/blob/main/api-endpoints.md)
 
 ### [System Architecture and Design Process](https://github.com/LiberNovus/tdd-react-timer/blob/master/system-architecture-design.md)
 
